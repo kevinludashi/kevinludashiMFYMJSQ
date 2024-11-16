@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瓷砖规格</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            background-color: #f4f4f4;
+            padding-top: 20px;
+            overflow: auto;  /* 使页面可以滚动 */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        /* 媒体查询，屏幕宽度小于768px时调整标题字体 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 22px; /* 缩小字体 */
+                padding: 0 10px; /* 缩小左右内边距 */
+            }
+        }
+
+        .calc-method {
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        #calculator-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px;
+			padding: 0 20px;  /* 增加左右边距 */
+        }
+
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            margin-bottom: 20px;
+            position: relative;
+            flex: 1 1 calc(20% - 20px);
+            box-sizing: border-box;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .add-button, .remove-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+
+        .remove-button {
+            background-color: red;
+            padding: 5px 10px;
+            font-size: 14px;
+            position: absolute;
+            top: -12px;
+            right: 7px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .remove-button:hover {
+            background-color: darkred;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FF0000;
+            margin-top: -20px;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .price-section {
+            margin-top: 20px;
+            padding-left: 20px;
+            width: 280px;
+        }
+
+        .price-section input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: blue;
+            margin-top: 10px;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .reset-button {
+            font-size: 14px;
+            padding: 8px 12px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 10px 20px;
+        }
+
+        .reset-button:hover {
+            background-color: #e64a19;
+        }
+
+        @media (max-width: 768px) {
+            .calculator {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>美缝延米和价格计算器 3.0</h1>
+
+<!-- 计算器归零按钮 -->
+<button class="reset-button" onclick="resetAllCalculators()">计算器归零</button>
+
+<div class="calc-method">
+    <label for="calc-method-select">选择计算方式:</label>
+    <select id="calc-method-select" onchange="changeCalculationMethod()">
+        <option value="area">面积计算方式</option>
+        <option value="tile">瓷砖块数计算方式</option>
+    </select>
+</div>
+
+<div id="calculator-container">
+    <div class="calculator">
+        <h2>瓷砖规格 1</h2>
+        <div class="input-group">
+            <label for="area">请输入:</label>
+            <input type="number" class="area" placeholder="输入面积" />
+        </div>
+        <div class="input-group">
+            <label for="length">长 (m):</label>
+            <input type="number" class="length" placeholder="输入长度" />
+        </div>
+        <div class="input-group">
+            <label for="width">宽 (m):</label>
+            <input type="number" class="width" placeholder="输入宽度" />
+        </div>
+        <div class="result">
+            <p>结果: <span class="result-value">0 米</span></p>
+        </div>
+        <button class="add-button" onclick="addCalculator(this)">添加瓷砖规格</button>
+    </div>
+</div>
+
+<div class="total">
+    <p>总米数: <span id="total-result">0 米</span></p>
+</div>
+
+<div class="price-section">
+    <label for="unit-price">请输入单价 (元):</label>
+    <input type="number" id="unit-price" placeholder="请输入单价" oninput="updateTotalPrice()" />
+    <div class="total-price" id="total-price">总价: 0 元</div>
+    <div class="note">以上计算结果均为预估数值，请以实际测量为准</div>
+	<div style="text-align: center; font-size: 12px; color: #888; margin-top: 25px;">
+	    作者:Kevin鲁大师/仅供学习交流/未经许可 盗用必究
+	</div>
+
+</div>
+
+<script>
+    let counter = 1;
+    let calcMethod = 'area';  // 默认计算方式为面积计算
+
+    // 为所有计算器的输入框绑定实时更新事件
+    function addEventListenersToCalculator(calculator) {
+        const areaInput = calculator.querySelector('.area');
+        const lengthInput = calculator.querySelector('.length');
+        const widthInput = calculator.querySelector('.width');
+        const resultValue = calculator.querySelector('.result-value');
+
+        const calculateNewResult = () => {
+            const area = parseFloat(areaInput.value);
+            const length = parseFloat(lengthInput.value);
+            const width = parseFloat(widthInput.value);
+            let result = 0;
+
+            if (calcMethod === 'area') {
+                result = (area / (length * width)) * (length + width);
+            } else if (calcMethod === 'tile') {
+                const blocks = parseFloat(areaInput.value);  // 块数
+                result = blocks * (length + width);
+            }
+
+            resultValue.textContent = result.toFixed(2) + " 米";
+            updateTotal();
+        };
+
+        areaInput.addEventListener('input', calculateNewResult);
+        lengthInput.addEventListener('input', calculateNewResult);
+        widthInput.addEventListener('input', calculateNewResult);
+    }
+
+    // 计算方式变化时更新每个计算器的输入框和计算公式
+    function changeCalculationMethod() {
+        calcMethod = document.getElementById('calc-method-select').value;
+        
+        // 保留第一个计算器，清空其他计算器
+        const calculators = document.querySelectorAll('.calculator');
+        for (let i = 1; i < calculators.length; i++) {
+            calculators[i].remove(); // 删除第一个计算器后面的所有计算器
+        }
+
+        resetAllCalculators();  // 清空输入框内容
+        updateCalculationFormulas(); // 更新计算方式
+        updateTotal(); // 更新总数
+    }
+
+    function updateCalculationFormulas() {
+        const calculators = document.querySelectorAll('.calculator');
+        calculators.forEach(calculator => {
+            const areaInput = calculator.querySelector('.area');
+            const lengthInput = calculator.querySelector('.length');
+            const widthInput = calculator.querySelector('.width');
+
+            if (calcMethod === 'area') {
+                areaInput.setAttribute('placeholder', '输入面积（㎡）');
+                lengthInput.setAttribute('placeholder', '输入长度（m）');
+                widthInput.setAttribute('placeholder', '输入宽度（m）');
+            } else {
+                areaInput.setAttribute('placeholder', '输入块数');
+                lengthInput.setAttribute('placeholder', '输入长度（m）');
+                widthInput.setAttribute('placeholder', '输入宽度（m）');
+            }
+
+            addEventListenersToCalculator(calculator);  // 重新绑定事件
+        });
+    }
+
+    // 添加新的计算器
+    function addCalculator(button) {
+        counter++;
+        const container = document.getElementById('calculator-container');
+        const newCalculator = document.createElement('div');
+        newCalculator.classList.add('calculator');
+        newCalculator.innerHTML = `
+            <h2>瓷砖规格 ${counter}</h2>
+            <button class="remove-button" onclick="removeCalculator(this)">×</button>
+            <div class="input-group">
+                <label for="area">请输入:</label>
+                <input type="number" class="area" placeholder="数据" />
+            </div>
+            <div class="input-group">
+                <label for="length">长 (m):</label>
+                <input type="number" class="length" placeholder="输入长度（m）" />
+            </div>
+            <div class="input-group">
+                <label for="width">宽 (m):</label>
+                <input type="number" class="width" placeholder="输入宽度（m）" />
+            </div>
+            <div class="result">
+                <p>结果: <span class="result-value">0 米</span></p>
+            </div>
+            <button class="add-button" onclick="addCalculator(this)">添加瓷砖规格</button>
+        `;
+        container.appendChild(newCalculator);
+        addEventListenersToCalculator(newCalculator);
+    }
+
+    // 删除计算器
+    function removeCalculator(button) {
+        const calculator = button.closest('.calculator');
+        calculator.remove();
+        updateTotal();
+    }
+
+    // 清空所有输入框
+    function resetAllCalculators() {
+        const areaInputs = document.querySelectorAll('.area');
+        const lengthInputs = document.querySelectorAll('.length');
+        const widthInputs = document.querySelectorAll('.width');
+        areaInputs.forEach(input => input.value = '');
+        lengthInputs.forEach(input => input.value = '');
+        widthInputs.forEach(input => input.value = '');
+        updateTotal();
+    }
+
+    // 更新总米数
+    function updateTotal() {
+        let total = 0;
+        const resultValues = document.querySelectorAll('.result-value');
+        resultValues.forEach(result => {
+            const resultText = result.textContent.replace(' 米', '');
+            const resultValue = parseFloat(resultText);
+            if (!isNaN(resultValue)) {
+                total += resultValue;
+            }
+        });
+        document.getElementById('total-result').textContent = total.toFixed(2) + " 米";
+        updateTotalPrice();
+    }
+
+    // 更新总价
+    function updateTotalPrice() {
+        const total = parseFloat(document.getElementById('total-result').textContent.replace(' 米', ''));
+        const unitPrice = parseFloat(document.getElementById('unit-price').value);
+        if (!isNaN(total) && !isNaN(unitPrice)) {
+            const totalPrice = total * unitPrice;
+            document.getElementById('total-price').textContent = `总价: ${totalPrice.toFixed(2)} 元`;
+        } else {
+            document.getElementById('total-price').textContent = '总价: 0 元';
+        }
+    }
+
+    // 初始化
+    updateCalculationFormulas();
+</script>
+
+</body>
+</html>
