@@ -45,7 +45,7 @@
             flex-wrap: wrap;
             justify-content: flex-start;
             gap: 20px;
-			padding: 0 20px;  /* 增加左右边距 */
+            padding: 0 20px;  /* 增加左右边距 */
         }
 
         .calculator {
@@ -221,10 +221,9 @@
     <input type="number" id="unit-price" placeholder="请输入单价" oninput="updateTotalPrice()" />
     <div class="total-price" id="total-price">总价: 0 元</div>
     <div class="note">以上计算结果均为预估数值，请以实际测量为准</div>
-	<div style="text-align: center; font-size: 12px; color: #888; margin-top: 25px;">
-	    作者:Kevin鲁大师/仅供学习交流/未经许可 盗用必究
-	</div>
-
+    <div style="text-align: center; font-size: 12px; color: #888; margin-top: 25px;">
+        作者:Kevin鲁大师/仅供学习交流/未经许可 盗用必究
+    </div>
 </div>
 
 <script>
@@ -333,8 +332,13 @@
         updateTotal();
     }
 
-    // 清空所有输入框
+    // 清空所有输入框，只保留一个计算器
     function resetAllCalculators() {
+        const calculators = document.querySelectorAll('.calculator');
+        for (let i = 1; i < calculators.length; i++) {
+            calculators[i].remove(); // 删除其他计算器
+        }
+
         const areaInputs = document.querySelectorAll('.area');
         const lengthInputs = document.querySelectorAll('.length');
         const widthInputs = document.querySelectorAll('.width');
