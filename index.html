@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>美缝包工包料延米和价格计算器 3.0-kevin鲁大师-仅供交流学习，请勿用于商业-未经许可 盗用必究</title>
     <style>
+		span{
+			font-style: italic;
+			font-weight: bold;
+			color: rgb(255, 84, 37);
+			font-size: 16px;
+			text-decoration: underline;
+		}
 		/* 使用说明样式调整 */
 		.usage-notes {
 		    font-size: 14px;
@@ -188,20 +196,26 @@
 
 <h1>美缝延米和价格计算器 3.0</h1>
 <div class="usage-notes">
-    <p>使用前须知：</p>
-    <p>使用前请先在下方选择您需要的计算方式；</p>
+    <p><span>使用前须知：</span></p>
+    
     <p>当网页出现BUG的时候请尝试刷新网页；</p>
     <p>面积“㎡”，长/宽“m”，例如80cm*80cm砖就是0.8m；</p>
     <p>当输入框有新的数据输入时计算结果才会有变化；</p>
     <p>计算结果在页面最下方；</p>
+	<p><span>计算前请先点击【刷新网页】再点击【选择计算方式】</span>；</p>
+</div>
+<!-- 按钮容器 -->
+<div style="display: flex; gap: 30px; margin: 10px 20px;">
+	<!-- 计算器归零按钮 -->
+	<button class="reset-button" onclick="resetAllCalculators()">计算器归零</button>
+
+    <!-- 网页刷新按钮 -->
+    <button class="reset-button" onclick="window.location.reload()">刷新网页</button>
 </div>
 
 
-<!-- 计算器归零按钮 -->
-<button class="reset-button" onclick="resetAllCalculators()">计算器归零</button>
-
 <div class="calc-method">
-    <label for="calc-method-select">请您首先选择计算方式:</label>
+    <label for="calc-method-select">请先点刷新网页，再选择计算方式:</label>
     <select id="calc-method-select" onchange="changeCalculationMethod()">
         <option value="area">面积计算方式</option>
         <option value="tile">瓷砖块数计算方式</option>
